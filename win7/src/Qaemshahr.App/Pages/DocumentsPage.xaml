@@ -1,0 +1,304 @@
+<Page x:Class="Qaemshahr.App.Pages.DocumentsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      FlowDirection="RightToLeft" Background="{StaticResource BgBrush}">
+  <Page.Resources>
+    <Style x:Key="DocThumbButton" TargetType="Button">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="3"/>
+      <Setter Property="Width" Value="56"/>
+      <Setter Property="Height" Value="70"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="Bd" Background="{StaticResource SoftPanelBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                    CornerRadius="6" Padding="2">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                <Setter TargetName="Bd" Property="Background" Value="#F0F7FB"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="FilterCheck" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+      <Setter Property="Margin" Value="0,0,14,6"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+  </Page.Resources>
+
+  <DockPanel Margin="16">
+    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+      <TextBlock Text="اسناد رمزشده" Style="{StaticResource PageTitle}"/>
+      <TextBlock Style="{StaticResource MutedText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                 Text="هر ردیف یک کارمند است. فیلتر و گروه را تنظیم کنید، کارمندان را تیک بزنید و خروجی ZIP بگیرید. روی پیش‌نمایش کلیک کنید تا سند باز شود."/>
+    </StackPanel>
+
+    <Border DockPanel.Dock="Top" Style="{StaticResource CardFill}" Padding="14" Margin="0,0,0,10">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Style="{StaticResource FieldLabel}" Text="جستجو (نام / کد ملی / شماره پرسنلی / سمت)"/>
+            <TextBox x:Name="SearchBox"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2">
+            <TextBlock Style="{StaticResource FieldLabel}" Text="وضعیت"/>
+            <WrapPanel Margin="0,4,0,0">
+              <CheckBox x:Name="StatusActiveBox" Content="فعال" Style="{StaticResource FilterCheck}" IsChecked="True" Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+              <CheckBox x:Name="StatusInactiveBox" Content="غیرفعال" Style="{StaticResource FilterCheck}" IsChecked="True" Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+            </WrapPanel>
+          </StackPanel>
+          <StackPanel Grid.Column="4">
+            <TextBlock Style="{StaticResource FieldLabel}" Text="نوع پرسنل"/>
+            <WrapPanel Margin="0,4,0,0">
+              <CheckBox x:Name="PersonEmployeeBox" Content="کارمند" Style="{StaticResource FilterCheck}" Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+              <CheckBox x:Name="PersonWorkerBox" Content="کارگر" Style="{StaticResource FilterCheck}" Checked="OnFilterChanged" Unchecked="OnFilterChanged"/>
+            </WrapPanel>
+          </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Style="{StaticResource FieldLabel}" Text="نوع استخدام"/>
+            <WrapPanel x:Name="EmploymentTypeHost" Margin="0,4,0,0"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2">
+            <TextBlock Style="{StaticResource FieldLabel}" Text="دسته‌بندی مدارک (نمایش و خروجی)"/>
+            <WrapPanel Margin="0,4,0,0">
+              <CheckBox x:Name="CatBirthBox" Content="شناسنامه" Style="{StaticResource FilterCheck}" IsChecked="True" Checked="OnCategoryChanged" Unchecked="OnCategoryChanged"/>
+              <CheckBox x:Name="CatNationalBox" Content="کارت ملی" Style="{StaticResource FilterCheck}" IsChecked="True" Checked="OnCategoryChanged" Unchecked="OnCategoryChanged"/>
+              <CheckBox x:Name="CatOtherBox" Content="سایر" Style="{StaticResource FilterCheck}" IsChecked="True" Checked="OnCategoryChanged" Unchecked="OnCategoryChanged"/>
+            </WrapPanel>
+          </StackPanel>
+          <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <Button Content="انتخاب همه" Style="{StaticResource ChipButton}" Click="OnSelectAll" Margin="0,0,8,0" MinHeight="34"/>
+            <Button Content="برداشتن تیک‌ها" Style="{StaticResource ChipButton}" Click="OnClearSelection" Margin="0,0,8,0" MinHeight="34"/>
+            <Button Content="خروجی ZIP انتخاب‌شده" Style="{StaticResource PrimaryButton}" Click="OnExportZip" MinHeight="34" Padding="14,6"
+                    ToolTip="مدارک دسته‌های انتخاب‌شده برای کارمندان تیک‌خورده"/>
+          </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Margin="0,10,0,0">
+          <TextBlock Style="{StaticResource FieldLabel}" Text="گروه‌ها (فقط اعضای گروه‌های انتخاب‌شده — اگر خالی باشد همه)"/>
+          <Border Background="{StaticResource SoftPanelBrush}" BorderBrush="{StaticResource BorderBrush}"
+                  BorderThickness="1" CornerRadius="8" Padding="8,6" Margin="0,4,0,0" MaxHeight="92">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+              <WrapPanel x:Name="GroupsHost"/>
+            </ScrollViewer>
+          </Border>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid DockPanel.Dock="Top" Margin="0,0,0,8">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock x:Name="CountText" Style="{StaticResource MutedText}" VerticalAlignment="Center"/>
+      <TextBlock x:Name="SelectCountText" Grid.Column="1" Style="{StaticResource MutedText}" VerticalAlignment="Center"/>
+    </Grid>
+
+    <DataGrid x:Name="Grid" AutoGenerateColumns="False" IsReadOnly="True"
+              HeadersVisibility="Column" CanUserAddRows="False" CanUserResizeRows="False"
+              SelectionMode="Single" SelectionUnit="FullRow"
+              AlternatingRowBackground="{StaticResource SoftPanelBrush}"
+              RowHeight="86" ColumnHeaderHeight="42"
+              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+              EnableRowVirtualization="True" EnableColumnVirtualization="True"
+              VirtualizingPanel.IsVirtualizing="True"
+              VirtualizingPanel.VirtualizationMode="Recycling"
+              VirtualizingPanel.CacheLength="2,2"
+              VirtualizingPanel.CacheLengthUnit="Page"
+              ScrollViewer.CanContentScroll="True">
+      <DataGrid.ColumnHeaderStyle>
+        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+          <Setter Property="HorizontalContentAlignment" Value="Center"/>
+          <Setter Property="VerticalContentAlignment" Value="Center"/>
+          <Setter Property="FontWeight" Value="SemiBold"/>
+          <Setter Property="Padding" Value="8,6"/>
+        </Style>
+      </DataGrid.ColumnHeaderStyle>
+      <DataGrid.CellStyle>
+        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+          <Setter Property="HorizontalContentAlignment" Value="Center"/>
+          <Setter Property="VerticalContentAlignment" Value="Center"/>
+          <Setter Property="Padding" Value="6,4"/>
+          <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+        </Style>
+      </DataGrid.CellStyle>
+      <DataGrid.Columns>
+        <DataGridTemplateColumn Header="انتخاب" Width="70" CanUserResize="False">
+          <DataGridTemplateColumn.HeaderStyle>
+            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+              <Setter Property="HorizontalContentAlignment" Value="Center"/>
+              <Setter Property="VerticalContentAlignment" Value="Center"/>
+              <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+          </DataGridTemplateColumn.HeaderStyle>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Style="{StaticResource GridCheckBox}"
+                        IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Checked="OnRowCheckChanged" Unchecked="OnRowCheckChanged"/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+
+        <DataGridTextColumn Header="کارمند" Binding="{Binding EmployeeName}" Width="1.3*" MinWidth="140">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="TextAlignment" Value="Center"/>
+              <Setter Property="TextWrapping" Value="Wrap"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+
+        <DataGridTextColumn Header="کد ملی" Binding="{Binding NationalId}" Width="110">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="TextAlignment" Value="Center"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+
+        <DataGridTextColumn Header="وضعیت" Binding="{Binding StatusFa}" Width="80">
+          <DataGridTextColumn.ElementStyle>
+            <Style TargetType="TextBlock">
+              <Setter Property="TextAlignment" Value="Center"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+
+        <DataGridTemplateColumn x:Name="BirthColumn" Header="شناسنامه" Width="*" MinWidth="120">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <ItemsControl ItemsSource="{Binding BirthThumbs}" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Style="{StaticResource DocThumbButton}" Click="OnThumbClick"
+                            Loaded="OnThumbLoaded"
+                            ToolTip="{Binding Tooltip}" Tag="{Binding}">
+                      <Grid>
+                        <Image Source="{Binding Image}" Stretch="Uniform" MaxWidth="50" MaxHeight="64"
+                               Visibility="{Binding ImageVisibility}"/>
+                        <Border Background="#EEF2F5" CornerRadius="4" Padding="4,8"
+                                Visibility="{Binding PlaceholderVisibility}">
+                          <TextBlock Text="{Binding Placeholder}" FontSize="11" FontWeight="SemiBold"
+                                     Foreground="{StaticResource MutedBrush}" TextAlignment="Center"
+                                     TextWrapping="Wrap"/>
+                        </Border>
+                      </Grid>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+
+        <DataGridTemplateColumn x:Name="NationalColumn" Header="کارت ملی" Width="*" MinWidth="120">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <ItemsControl ItemsSource="{Binding NationalThumbs}" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Style="{StaticResource DocThumbButton}" Click="OnThumbClick"
+                            Loaded="OnThumbLoaded"
+                            ToolTip="{Binding Tooltip}" Tag="{Binding}">
+                      <Grid>
+                        <Image Source="{Binding Image}" Stretch="Uniform" MaxWidth="50" MaxHeight="64"
+                               Visibility="{Binding ImageVisibility}"/>
+                        <Border Background="#EEF2F5" CornerRadius="4" Padding="4,8"
+                                Visibility="{Binding PlaceholderVisibility}">
+                          <TextBlock Text="{Binding Placeholder}" FontSize="11" FontWeight="SemiBold"
+                                     Foreground="{StaticResource MutedBrush}" TextAlignment="Center"
+                                     TextWrapping="Wrap"/>
+                        </Border>
+                      </Grid>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+
+        <DataGridTemplateColumn x:Name="OtherColumn" Header="سایر" Width="*" MinWidth="120">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <ItemsControl ItemsSource="{Binding OtherThumbs}" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Style="{StaticResource DocThumbButton}" Click="OnThumbClick"
+                            Loaded="OnThumbLoaded"
+                            ToolTip="{Binding Tooltip}" Tag="{Binding}">
+                      <Grid>
+                        <Image Source="{Binding Image}" Stretch="Uniform" MaxWidth="50" MaxHeight="64"
+                               Visibility="{Binding ImageVisibility}"/>
+                        <Border Background="#EEF2F5" CornerRadius="4" Padding="4,8"
+                                Visibility="{Binding PlaceholderVisibility}">
+                          <TextBlock Text="{Binding Placeholder}" FontSize="11" FontWeight="SemiBold"
+                                     Foreground="{StaticResource MutedBrush}" TextAlignment="Center"
+                                     TextWrapping="Wrap"/>
+                        </Border>
+                      </Grid>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </DockPanel>
+</Page>

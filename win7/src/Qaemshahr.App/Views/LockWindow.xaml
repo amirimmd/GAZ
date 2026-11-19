@@ -1,0 +1,29 @@
+<Window x:Class="Qaemshahr.App.Views.LockWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="قفل برنامه"
+        WindowStartupLocation="CenterOwner"
+        Width="400"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Language="fa-IR"
+        FlowDirection="RightToLeft"
+        Background="{StaticResource SurfaceBrush}"
+        FontFamily="{StaticResource AppFont}">
+  <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="28,24"
+          Background="{StaticResource SurfaceBrush}">
+    <StackPanel>
+      <TextBlock Text="برنامه قفل شده است" Foreground="{StaticResource PrimaryBrush}" FontSize="18" FontWeight="Bold"
+                 HorizontalAlignment="Center" TextAlignment="Center"/>
+      <TextBlock x:Name="UserText" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" TextAlignment="Center"
+                 Margin="0,8,0,16"/>
+      <TextBlock Style="{StaticResource FieldLabel}" Text="رمز عبور"/>
+      <PasswordBox x:Name="PassBox" KeyDown="OnKey"/>
+      <TextBlock x:Name="ErrorText" Foreground="{StaticResource DangerBrush}" MinHeight="20" Margin="0,8,0,8" TextWrapping="Wrap"
+                 TextAlignment="Center"/>
+      <Button Content="باز کردن قفل" Style="{StaticResource PrimaryButton}" Click="OnUnlock"
+              HorizontalAlignment="Stretch" Margin="0,4,0,0"/>
+    </StackPanel>
+  </Border>
+</Window>

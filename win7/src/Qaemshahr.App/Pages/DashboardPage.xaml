@@ -1,0 +1,487 @@
+<Page x:Class="Qaemshahr.App.Pages.DashboardPage"
+
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+      FlowDirection="RightToLeft"
+
+      Background="{StaticResource BgBrush}">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+    <StackPanel Margin="20,16,20,24" MaxWidth="1180" HorizontalAlignment="Center">
+
+
+
+      <Border CornerRadius="16" Padding="22,18" Margin="0,0,0,16" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+
+        <Border.Background>
+
+          <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+
+            <GradientStop Color="#E7F2F8" Offset="0"/>
+
+            <GradientStop Color="#FFFFFF" Offset="1"/>
+
+          </LinearGradientBrush>
+
+        </Border.Background>
+
+        <Grid>
+
+          <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*"/>
+
+            <ColumnDefinition Width="16"/>
+
+            <ColumnDefinition Width="Auto"/>
+
+          </Grid.ColumnDefinitions>
+
+          <StackPanel>
+
+            <TextBlock Text="آمار نیروی انسانی" FontSize="13" Foreground="{StaticResource PrimaryLightBrush}" FontWeight="SemiBold"/>
+
+            <TextBlock Text="داشبورد پرسنل" FontSize="24" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,4,0,6"/>
+
+            <TextBlock x:Name="WelcomeText" Style="{StaticResource MutedText}" TextWrapping="Wrap"/>
+
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" VerticalAlignment="Center">
+
+            <TextBlock Text="امروز" Style="{StaticResource MutedText}" FontSize="12" HorizontalAlignment="Right"/>
+
+            <TextBlock x:Name="TodayText" FontWeight="Bold" FontSize="18" Foreground="{StaticResource PrimaryBrush}"
+
+                       HorizontalAlignment="Right" Margin="0,4,0,8"/>
+
+            <TextBlock x:Name="HeroSummaryText" Style="{StaticResource MutedText}" FontSize="12"
+
+                       HorizontalAlignment="Right" TextWrapping="Wrap"/>
+
+          </StackPanel>
+
+        </Grid>
+
+      </Border>
+
+
+
+      <TextBlock Text="شاخص‌های اصلی" Style="{StaticResource SectionTitle}" Margin="0,0,0,8"/>
+
+      <WrapPanel x:Name="KpiHost" Margin="0,0,0,10"/>
+
+
+
+      <Grid Margin="0,4,0,0">
+
+        <Grid.ColumnDefinitions>
+
+          <ColumnDefinition Width="*" MinWidth="260"/>
+
+          <ColumnDefinition Width="12"/>
+
+          <ColumnDefinition Width="*" MinWidth="260"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+
+          <RowDefinition Height="Auto"/>
+
+          <RowDefinition Height="Auto"/>
+
+          <RowDefinition Height="Auto"/>
+
+          <RowDefinition Height="Auto"/>
+
+          <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+
+
+        <Border Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="228" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,14">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="جامعه آماری: کارمند و کارگر" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="سهم هر نوع پرسنل از نیروی فعال — بر اساس فیلد نوع پرسنل."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="PersonTypeHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Column="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="228" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="تکمیل پرونده هویتی" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="درصد نیروی فعال با عکس، شناسنامه و کارت ملی کامل."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="DocsCompleteHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+
+
+        <Border Grid.Row="1" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="جنسیت" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="توزیع جنسیت ثبت‌شده در پرونده پرسنل."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="GenderHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="وضعیت تأهل" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="توزیع تأهل نیروی فعال."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="MaritalHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+
+
+        <Border Grid.Row="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="نوع استخدام" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="رسمی، قراردادی، ارکان ثالث و …"/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="TypeHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="گروه‌های فعال" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="تعداد اعضای فعال هر گروه."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="GroupsHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+
+
+        <Border Grid.Row="3" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="هرم سنی" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="محاسبه از تاریخ تولد شمسی."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="AgeHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="220" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="سابقه خدمت" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="از تاریخ استخدام شمسی."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="TenureHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+
+
+        <Border Grid.Row="4" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="200" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="مقطع تحصیلی" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="از فیلد مقطع تحصیلی پرونده پرسنل."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="EduHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource CardFill}" Margin="0,0,0,12" MinHeight="200" Padding="20">
+
+          <DockPanel>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+
+              <TextBlock Style="{StaticResource SectionTitle}" Text="مهارت‌های ثبت‌شده" Margin="0"/>
+
+              <TextBlock Style="{StaticResource MutedText}" Text="پر تکرارترین مهارت‌ها در نیروی فعال."/>
+
+            </StackPanel>
+
+            <ContentControl x:Name="SkillHost" HorizontalContentAlignment="Stretch"/>
+
+          </DockPanel>
+
+        </Border>
+
+      </Grid>
+
+
+
+      <Border Style="{StaticResource CardFill}" Margin="0,0,0,12" Padding="20">
+
+        <DockPanel>
+
+          <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="جزئیات تکمیل اسناد" Margin="0"/>
+
+            <TextBlock Style="{StaticResource MutedText}" Text="عکس ۴×۳، شناسنامه و کارت ملی — درصد تکمیل در برابر ناقص."/>
+
+          </StackPanel>
+
+          <ContentControl x:Name="DocsHost" HorizontalContentAlignment="Stretch"/>
+
+        </DockPanel>
+
+      </Border>
+
+
+
+      <Border Style="{StaticResource CardFill}" Margin="0,0,0,12" Padding="20">
+
+        <DockPanel>
+
+          <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="روند ثبت نیرو — ۱۲ ماه شمسی" Margin="0"/>
+
+            <TextBlock Style="{StaticResource MutedText}" Text="محور عمودی تعداد نفر است. اگر تاریخ استخدام خالی باشد از تاریخ ثبت پرونده استفاده می‌شود."/>
+
+          </StackPanel>
+
+          <ContentControl x:Name="HireHost" HorizontalContentAlignment="Stretch"/>
+
+        </DockPanel>
+
+      </Border>
+
+
+
+      <Grid Margin="0,0,0,12">
+
+        <Grid.ColumnDefinitions>
+
+          <ColumnDefinition Width="*"/>
+
+          <ColumnDefinition Width="12"/>
+
+          <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource CardFill}" Padding="20">
+
+          <DockPanel>
+
+            <TextBlock DockPanel.Dock="Top" Style="{StaticResource SectionTitle}" Text="نمونه (سال جاری)"/>
+
+            <TextBlock x:Name="ExemplaryCountText" DockPanel.Dock="Top" FontSize="26" FontWeight="Bold"
+
+                       Foreground="{StaticResource SuccessTextBrush}" Margin="0,0,0,8"/>
+
+            <StackPanel x:Name="ExemplaryHost"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Column="2" Style="{StaticResource CardFill}" Padding="20">
+
+          <DockPanel>
+
+            <TextBlock DockPanel.Dock="Top" Style="{StaticResource SectionTitle}" Text="معرفی فراسازمانی (سال جاری)"/>
+
+            <TextBlock x:Name="ExtraOrgCountText" DockPanel.Dock="Top" FontSize="26" FontWeight="Bold"
+
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,8"/>
+
+            <StackPanel x:Name="ExtraOrgHost"/>
+
+          </DockPanel>
+
+        </Border>
+
+      </Grid>
+
+
+
+      <TextBlock Text="اقدام فوری" FontWeight="Bold" FontSize="16"
+
+                 Foreground="{StaticResource PrimaryBrush}" Margin="0,2,0,10"/>
+
+      <Grid>
+
+        <Grid.ColumnDefinitions>
+
+          <ColumnDefinition Width="*" MinWidth="220"/>
+
+          <ColumnDefinition Width="12"/>
+
+          <ColumnDefinition Width="*" MinWidth="220"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource CardFill}" Padding="14">
+
+          <DockPanel>
+
+            <TextBlock DockPanel.Dock="Top" Text="تماس یا سمت ناقص" FontWeight="SemiBold"
+
+                       Foreground="{StaticResource DangerBrush}" Margin="0,0,0,10"/>
+
+            <StackPanel x:Name="ActionRiskHost"/>
+
+          </DockPanel>
+
+        </Border>
+
+        <Border Grid.Column="2" Style="{StaticResource CardFill}" Padding="14">
+
+          <DockPanel>
+
+            <TextBlock DockPanel.Dock="Top" Text="پرونده ناقص" FontWeight="SemiBold"
+
+                       Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,10"/>
+
+            <StackPanel x:Name="ActionIncompleteHost"/>
+
+          </DockPanel>
+
+        </Border>
+
+      </Grid>
+
+
+
+      <Border Style="{StaticResource SoftPanel}" HorizontalAlignment="Stretch" Padding="14,12" Margin="0,8,0,0">
+
+        <Grid>
+
+          <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*"/>
+
+            <ColumnDefinition Width="12"/>
+
+            <ColumnDefinition Width="*"/>
+
+            <ColumnDefinition Width="12"/>
+
+            <ColumnDefinition Width="*"/>
+
+          </Grid.ColumnDefinitions>
+
+          <StackPanel>
+
+            <TextBlock Text="نسخه برنامه" Style="{StaticResource MutedText}" FontSize="12"/>
+
+            <TextBlock x:Name="VersionText" FontWeight="SemiBold" Margin="0,4,0,0"/>
+
+          </StackPanel>
+
+          <StackPanel Grid.Column="2">
+
+            <TextBlock Text="محل ذخیرهٔ داده" Style="{StaticResource MutedText}" FontSize="12"/>
+
+            <TextBlock x:Name="DataPathText" Style="{StaticResource PathText}" Margin="0,4,0,0" FontSize="12"/>
+
+          </StackPanel>
+
+          <StackPanel Grid.Column="4">
+
+            <TextBlock Text="پوشهٔ نصب" Style="{StaticResource MutedText}" FontSize="12"/>
+
+            <TextBlock x:Name="InstallPathText" Style="{StaticResource PathText}" Margin="0,4,0,0" FontSize="12"/>
+
+          </StackPanel>
+
+        </Grid>
+
+      </Border>
+
+    </StackPanel>
+
+  </ScrollViewer>
+
+</Page>
+
+

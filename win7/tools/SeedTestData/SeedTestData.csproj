@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>SeedTestData</RootNamespace>
+    <AssemblyName>SeedTestData</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Qaemshahr.Data\Qaemshahr.Data.csproj" />
+    <ProjectReference Include="..\..\src\Qaemshahr.Core\Qaemshahr.Core.csproj" />
+  </ItemGroup>
+</Project>

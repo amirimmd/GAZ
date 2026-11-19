@@ -1,0 +1,69 @@
+<UserControl x:Class="Qaemshahr.App.Controls.ShamsiDateField"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FlowDirection="RightToLeft"
+             HorizontalAlignment="Stretch"
+             MinWidth="0">
+  <UserControl.Resources>
+    <Style x:Key="DateActionButton" TargetType="Button" BasedOn="{StaticResource ChipButton}">
+      <Setter Property="MinHeight" Value="36"/>
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="MinWidth" Value="64"/>
+      <Setter Property="Padding" Value="12,4"/>
+      <Setter Property="Margin" Value="0,0,8,0"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+    <Style x:Key="DatePartHost" TargetType="Border">
+      <Setter Property="Margin" Value="0,0,8,8"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+  </UserControl.Resources>
+
+  <!-- WrapPanel: با منوی باز/بسته جمع نمی‌شود؛ دکمه‌ها به خط بعد می‌روند -->
+  <WrapPanel Orientation="Horizontal" ItemHeight="44">
+    <Border Style="{StaticResource DatePartHost}" Width="92">
+      <Grid Height="36">
+        <ComboBox x:Name="YearBox" Height="36" SelectionChanged="OnPartChanged"
+                  VerticalContentAlignment="Center"
+                  ToolTip="سال شمسی — دابل‌کلیک برای تایپ عددی"/>
+        <TextBox x:Name="YearEdit" Visibility="Collapsed" Height="36" MaxLength="4"
+                 VerticalContentAlignment="Center" TextAlignment="Center" Padding="4,0"
+                 ToolTip="سال را عددی وارد کنید و Enter بزنید"
+                 PreviewTextInput="OnNumericPreview" DataObject.Pasting="OnNumericPaste"
+                 LostFocus="OnEditLostFocus" KeyDown="OnEditKeyDown"/>
+      </Grid>
+    </Border>
+
+    <Border Style="{StaticResource DatePartHost}" MinWidth="120" Width="140">
+      <Grid Height="36">
+        <ComboBox x:Name="MonthBox" Height="36" FlowDirection="RightToLeft" SelectionChanged="OnPartChanged"
+                  VerticalContentAlignment="Center"
+                  ToolTip="ماه شمسی — دابل‌کلیک برای تایپ شماره ماه (۱ تا ۱۲)"/>
+        <TextBox x:Name="MonthEdit" Visibility="Collapsed" Height="36" MaxLength="2"
+                 VerticalContentAlignment="Center" TextAlignment="Center" Padding="4,0"
+                 ToolTip="شماره ماه را وارد کنید و Enter بزنید"
+                 PreviewTextInput="OnNumericPreview" DataObject.Pasting="OnNumericPaste"
+                 LostFocus="OnEditLostFocus" KeyDown="OnEditKeyDown"/>
+      </Grid>
+    </Border>
+
+    <Border Style="{StaticResource DatePartHost}" Width="76">
+      <Grid Height="36">
+        <ComboBox x:Name="DayBox" Height="36" SelectionChanged="OnPartChanged"
+                  VerticalContentAlignment="Center"
+                  ToolTip="روز — دابل‌کلیک برای تایپ عددی"/>
+        <TextBox x:Name="DayEdit" Visibility="Collapsed" Height="36" MaxLength="2"
+                 VerticalContentAlignment="Center" TextAlignment="Center" Padding="4,0"
+                 ToolTip="روز را عددی وارد کنید و Enter بزنید"
+                 PreviewTextInput="OnNumericPreview" DataObject.Pasting="OnNumericPaste"
+                 LostFocus="OnEditLostFocus" KeyDown="OnEditKeyDown"/>
+      </Grid>
+    </Border>
+
+    <Button Content="امروز" Style="{StaticResource DateActionButton}"
+            Click="OnToday" ToolTip="تاریخ امروز"/>
+    <Button Content="پاک" Style="{StaticResource DateActionButton}"
+            Click="OnClear" Margin="0,0,0,8" ToolTip="پاک کردن تاریخ"/>
+  </WrapPanel>
+</UserControl>

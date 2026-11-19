@@ -1,0 +1,412 @@
+<Window x:Class="Qaemshahr.App.Views.EmployeeEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrl="clr-namespace:Qaemshahr.App.Controls"
+        Title="پرونده کارمند" Height="720" Width="880"
+        WindowStartupLocation="CenterOwner" Language="fa-IR" FlowDirection="LeftToRight"
+        Background="{StaticResource BgBrush}" FontFamily="{StaticResource AppFont}">
+  <DockPanel FlowDirection="RightToLeft">
+    <Border DockPanel.Dock="Bottom" Padding="16" Background="{StaticResource SurfaceBrush}"
+            BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+      <StackPanel Style="{StaticResource DialogButtonBar}">
+        <Button Content="انصراف" Style="{StaticResource GhostButton}" Click="OnCancel" IsCancel="True"/>
+        <Button x:Name="SaveButton" Content="ذخیره" Style="{StaticResource PrimaryButton}" Click="OnSave" IsDefault="True"/>
+        <Button x:Name="NextButton" Content="بعدی" Style="{StaticResource GhostButton}" Click="OnNext"/>
+        <TextBlock x:Name="SaveStatusText" Style="{StaticResource MutedText}" VerticalAlignment="Center"
+                   Margin="16,0,0,0" MinWidth="120"/>
+      </StackPanel>
+    </Border>
+    <TabControl x:Name="MainTabs" Margin="16,16,16,8" SelectionChanged="OnTabChanged">
+      <TabItem Header="هویت">
+        <ScrollViewer>
+          <StackPanel Margin="16">
+            <StackPanel HorizontalAlignment="Center" Margin="0,0,0,16">
+              <Border Width="135" Height="180" CornerRadius="8" BorderBrush="{StaticResource BorderBrush}"
+                      BorderThickness="1" Background="{StaticResource FieldBgBrush}" ClipToBounds="True">
+                <Grid>
+                  <TextBlock x:Name="PhotoPlaceholder" Text="عکس ۴×۳" Foreground="{StaticResource MutedBrush}"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  <Image x:Name="PhotoImage" Stretch="UniformToFill"/>
+                </Grid>
+              </Border>
+              <WrapPanel HorizontalAlignment="Center" Margin="0,12,0,0">
+                <Button Content="انتخاب عکس ۴×۳" Style="{StaticResource GhostButton}" Click="OnPickPhoto"/>
+                <Button Content="حذف عکس" Style="{StaticResource DangerButton}" Click="OnClearPhoto"/>
+              </WrapPanel>
+              <TextBlock Style="{StaticResource MutedText}" Margin="0,8,0,0" TextAlignment="Center"
+                         Text="هر فایل تصویری به نسبت ۴×۳ برش می‌شود و به‌صورت JPEG ذخیره می‌گردد."/>
+            </StackPanel>
+            <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="نام *"/><TextBox x:Name="FirstNameBox"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="نام خانوادگی *"/><TextBox x:Name="LastNameBox"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="نام پدر"/><TextBox x:Name="FatherBox"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="کد ملی *"/><TextBox x:Name="NationalIdBox" Style="{StaticResource LtrBox}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="شماره شناسنامه"/><TextBox x:Name="IdBookletBox" Style="{StaticResource LtrBox}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="وضعیت ایثارگری"/>
+              <ComboBox x:Name="VeteranBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="تاریخ تولد"/>
+              <ctrl:ShamsiDateField x:Name="BirthDateBox"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="محل تولد"/>
+              <ComboBox x:Name="BirthPlaceBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="جنسیت"/>
+              <ComboBox x:Name="GenderBox" IsEditable="True">
+                <ComboBoxItem Content="آقا"/><ComboBoxItem Content="خانم"/>
+              </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="4" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="وضعیت تأهل"/>
+              <ComboBox x:Name="MaritalBox" IsEditable="True">
+                <ComboBoxItem Content="مجرد"/><ComboBoxItem Content="متأهل"/>
+              </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="تعداد فرزندان"/><TextBox x:Name="ChildrenBox" Text="0"/>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="گروه خونی"/>
+              <ComboBox x:Name="BloodBox" IsEditable="True">
+                <ComboBoxItem Content="A+"/><ComboBoxItem Content="A-"/><ComboBoxItem Content="B+"/>
+                <ComboBoxItem Content="B-"/><ComboBoxItem Content="AB+"/><ComboBoxItem Content="AB-"/>
+                <ComboBoxItem Content="O+"/><ComboBoxItem Content="O-"/>
+              </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="6" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="وضعیت نظام وظیفه"/>
+              <ComboBox x:Name="MilitaryBox" IsEditable="False" FlowDirection="RightToLeft"
+                        SelectionChanged="OnMilitaryChoice">
+                <ComboBoxItem Content="پایان خدمت"/>
+                <ComboBoxItem Content="معاف"/>
+                <ComboBoxItem Content="معافیت تحصیلی"/>
+                <ComboBoxItem Content="در حال خدمت"/>
+                <ComboBoxItem Content="مشمول"/>
+                <ComboBoxItem Content="مشمول نیست"/>
+                <ComboBoxItem Content="سایر" Tag="other"/>
+              </ComboBox>
+              <TextBox x:Name="MilitaryOtherBox" Visibility="Collapsed" Margin="0,8,0,0"
+                       ToolTip="وضعیت دیگر را بنویسید"/>
+            </StackPanel>
+            <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
+              <TextBlock Text="توضیحات"/><TextBox x:Name="DescBox" AcceptsReturn="True" Height="80" TextWrapping="Wrap"/>
+            </StackPanel>
+            </Grid>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="سازمانی">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      Padding="0,0,4,0">
+          <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="شماره پرسنلی"/><TextBox x:Name="EmpNoBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10"><TextBlock Text="شماره اشتراک"/><TextBox x:Name="SubNoBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="شهر محل خدمت"/>
+              <ComboBox x:Name="ServiceCityBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="سمت فعلی"/>
+              <ComboBox x:Name="PosBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="سمت قبلی"/>
+              <ComboBox x:Name="PrevPosBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="سمت حین خدمت (فیزیکی)"/>
+              <ComboBox x:Name="DesiredPosBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="نوع پرسنل"/>
+              <ComboBox x:Name="PersonTypeBox" IsEditable="False" FlowDirection="RightToLeft"
+                        ToolTip="مشخص کنید این فرد کارمند است یا کارگر">
+                <ComboBoxItem Content="کارمند" Tag="staff" IsSelected="True"/>
+                <ComboBoxItem Content="کارگر" Tag="worker"/>
+              </ComboBox>
+              <TextBlock Text="نوع استخدام" Margin="0,10,0,0"/>
+              <ComboBox x:Name="EmpTypeBox" IsEditable="False" FlowDirection="RightToLeft"
+                        SelectionChanged="OnEmpTypeChoice">
+                <ComboBoxItem Content="رسمی"/>
+                <ComboBoxItem Content="قراردادی"/>
+                <ComboBoxItem Content="ارکان ثالث"/>
+                <ComboBoxItem Content="خارج پرتال"/>
+                <ComboBoxItem Content="سایر" Tag="other"/>
+              </ComboBox>
+              <TextBox x:Name="EmpTypeOtherBox" Visibility="Collapsed" Margin="0,8,0,0"
+                       ToolTip="نوع استخدام دیگر را بنویسید"/>
+            </StackPanel>
+            <StackPanel x:Name="OfficialBasesPanel" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                        Margin="0,0,0,10" Visibility="Collapsed">
+              <Border Style="{StaticResource SoftPanel}" Padding="12">
+                <StackPanel>
+                  <TextBlock Text="اطلاعات استخدام رسمی" FontWeight="SemiBold" Margin="0,0,0,10"
+                             Foreground="{StaticResource PrimaryBrush}"/>
+                  <UniformGrid Columns="2">
+                    <StackPanel Margin="0,0,10,0">
+                      <TextBlock Text="پایه شماره سمت *"/>
+                      <TextBox x:Name="PositionBaseBox" Style="{StaticResource LtrBox}"
+                               ToolTip="سقف پایه شخصی"/>
+                    </StackPanel>
+                    <StackPanel>
+                      <TextBlock Text="پایه شخصی *"/>
+                      <TextBox x:Name="PersonalBaseBox" Style="{StaticResource LtrBox}"
+                               ToolTip="نباید از پایه شماره سمت بیشتر باشد"/>
+                    </StackPanel>
+                  </UniformGrid>
+                  <TextBlock Style="{StaticResource MutedText}" Margin="0,8,0,0" TextWrapping="Wrap"
+                             Text="برای استخدام رسمی فقط پایه شماره سمت و پایه شخصی ثبت می‌شود. پایه شخصی از پایه شماره سمت بالاتر نمی‌رود."/>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+            <StackPanel x:Name="ThirdPillarJobPanel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
+                        Margin="0,0,0,10" Visibility="Collapsed">
+              <Border Style="{StaticResource SoftPanel}" Padding="12">
+                <StackPanel>
+                  <TextBlock Text="اطلاعات ارکان ثالث" FontWeight="SemiBold" Margin="0,0,0,10"
+                             Foreground="{StaticResource PrimaryBrush}"/>
+                  <TextBlock Text="گروه شغلی *"/>
+                  <ComboBox x:Name="JobGroupBox" IsEditable="True" IsTextSearchEnabled="True"
+                            StaysOpenOnEdit="True" HorizontalAlignment="Stretch"
+                            ToolTip="نام گروه را بنویسید یا از پیشنهادها انتخاب کنید؛ پس از ذخیره در دفعات بعد پیشنهاد می‌شود"/>
+                  <TextBlock Style="{StaticResource MutedText}" Margin="0,8,0,0" TextWrapping="Wrap"
+                             Text="گروه شغلی برای دسته ارکان ثالث فعال است؛ دستی وارد کنید یا از پیشنهادهای قبلی انتخاب کنید."/>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+            <StackPanel Grid.Row="6" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="تاریخ استخدام"/>
+              <ctrl:ShamsiDateField x:Name="EmpDateBox"/>
+            </StackPanel>
+            <StackPanel Grid.Row="6" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="وضعیت اشتغال"/>
+              <ComboBox x:Name="StatusBox" SelectionChanged="OnStatusChanged">
+                <ComboBoxItem Content="فعال" Tag="active" IsSelected="True"/>
+                <ComboBoxItem Content="غیرفعال" Tag="inactive"/>
+              </ComboBox>
+            </StackPanel>
+            <StackPanel Grid.Row="7" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="تاریخ بازنشستگی"/>
+              <ctrl:ShamsiDateField x:Name="RetirementDateBox"/>
+              <TextBlock Style="{StaticResource MutedText}" FontSize="11" Margin="0,6,0,0" TextWrapping="Wrap"
+                         Text="اگر این تاریخ بگذرد، وضعیت به‌صورت خودکار غیرفعال (بازنشستگی) می‌شود."/>
+            </StackPanel>
+            <StackPanel x:Name="InactiveReasonPanel" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"
+                        Margin="0,0,0,10" Visibility="Collapsed">
+              <TextBlock x:Name="InactiveReasonLabel" Text="دلیل غیرفعال‌سازی *"/>
+              <TextBox x:Name="InactiveReasonBox" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="56"
+                       VerticalScrollBarVisibility="Auto"
+                       ToolTip="اگر غیرفعال‌سازی به‌دلیل بازنشستگی نباشد، دلیل را بنویسید"/>
+              <TextBlock x:Name="InactiveReasonHint" Style="{StaticResource MutedText}" FontSize="11"
+                         Margin="0,6,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+          </Grid>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="تماس">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,4,0">
+          <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="تلفن اصلی"/><TextBox x:Name="PhoneBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10"><TextBlock Text="تلفن دوم"/><TextBox x:Name="Phone2Box" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="تلفن اضطراری"/><TextBox x:Name="Phone3Box" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"><TextBlock Text="ایمیل"/><TextBox x:Name="EmailBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,10"><TextBlock Text="آدرس"/><TextBox x:Name="AddressBox"/></StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="کد پستی"/><TextBox x:Name="PostalBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource SoftPanel}" Padding="12" Margin="0,8,0,10">
+              <StackPanel>
+                <TextBlock Text="حساب بانکی (شبا)" FontWeight="SemiBold" Margin="0,0,0,10"
+                           Foreground="{StaticResource PrimaryBrush}"/>
+                <TextBlock Text="شماره شبا ۱"/>
+                <Grid Margin="0,4,0,0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Border x:Name="Iban1Badge" Width="44" Height="44" CornerRadius="10" Margin="0,0,10,0"
+                          Background="#5A6A72" VerticalAlignment="Top">
+                    <TextBlock x:Name="Iban1BadgeText" Text="شبا" Foreground="White" FontWeight="Bold"
+                               FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               TextAlignment="Center" TextWrapping="Wrap"/>
+                  </Border>
+                  <StackPanel Grid.Column="1">
+                    <TextBox x:Name="Iban1Box" Style="{StaticResource LtrBox}"
+                             ToolTip="مثال: IR120170000000123456789001"
+                             TextChanged="OnIban1Changed"/>
+                    <TextBlock x:Name="Iban1BankLabel" Style="{StaticResource MutedText}" Margin="0,6,0,0"
+                               Text="بانک پس از وارد کردن شبا تشخیص داده می‌شود"/>
+                  </StackPanel>
+                </Grid>
+                <TextBlock Text="شماره شبا ۲" Margin="0,14,0,0"/>
+                <Grid Margin="0,4,0,0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Border x:Name="Iban2Badge" Width="44" Height="44" CornerRadius="10" Margin="0,0,10,0"
+                          Background="#5A6A72" VerticalAlignment="Top">
+                    <TextBlock x:Name="Iban2BadgeText" Text="شبا" Foreground="White" FontWeight="Bold"
+                               FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               TextAlignment="Center" TextWrapping="Wrap"/>
+                  </Border>
+                  <StackPanel Grid.Column="1">
+                    <TextBox x:Name="Iban2Box" Style="{StaticResource LtrBox}"
+                             ToolTip="شبا دوم اختیاری است"
+                             TextChanged="OnIban2Changed"/>
+                    <TextBlock x:Name="Iban2BankLabel" Style="{StaticResource MutedText}" Margin="0,6,0,0"
+                               Text="بانک پس از وارد کردن شبا تشخیص داده می‌شود"/>
+                  </StackPanel>
+                </Grid>
+              </StackPanel>
+            </Border>
+          </Grid>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="تحصیلات و سوابق">
+        <ScrollViewer>
+          <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="مقطع تحصیلی"/>
+              <ComboBox x:Name="EduLevelBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="رشته"/>
+              <ComboBox x:Name="MajorBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,10">
+              <TextBlock Text="دانشگاه"/>
+              <ComboBox x:Name="UniversityBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,0,10">
+              <TextBlock Text="مهارت"/>
+              <ComboBox x:Name="SkillBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="سطح مهارت"/>
+              <ComboBox x:Name="SkillLevelBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="شماره بیمه"/><TextBox x:Name="InsNoBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="2" Margin="0,0,0,10">
+              <TextBlock Text="نوع بیمه"/>
+              <ComboBox x:Name="InsTypeBox" IsEditable="True" IsTextSearchEnabled="True" StaysOpenOnEdit="True"/>
+            </StackPanel>
+            <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="تلگرام"/><TextBox x:Name="TelegramBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="4" Grid.Column="2" Margin="0,0,0,10"><TextBlock Text="واتساپ"/><TextBox x:Name="WhatsappBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,0,0,10"><TextBlock Text="اینستاگرام"/><TextBox x:Name="InstagramBox" Style="{StaticResource LtrBox}"/></StackPanel>
+            <StackPanel Grid.Row="5" Grid.Column="2" Margin="0,0,0,10"><TextBlock Text="لینکدین"/><TextBox x:Name="LinkedinBox" Style="{StaticResource LtrBox}"/></StackPanel>
+          </Grid>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="اسناد" x:Name="DocsTab">
+        <ScrollViewer x:Name="DocsScroll" VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled" CanContentScroll="False"
+                      PanningMode="VerticalOnly">
+          <StackPanel Margin="12">
+            <TextBlock x:Name="DocsHint" Style="{StaticResource MutedText}" Margin="0,0,0,12"
+                       Text="شناسنامه و کارت ملی با نام خودکار ذخیره می‌شوند. برای سایر اسناد عنوان را خودتان بنویسید."/>
+            <Border Style="{StaticResource Card}" HorizontalAlignment="Stretch" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="شناسنامه" FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,6"/>
+                <TextBlock Style="{StaticResource MutedText}" Margin="0,0,0,8" TextWrapping="Wrap"
+                           Text="عنوان ذخیره: شناسنامه + نام کامل + کد ملی"/>
+                <WrapPanel Margin="0,0,0,8">
+                  <Button Content="افزودن" Style="{StaticResource PrimaryButton}" Tag="شناسنامه" Click="OnAddDoc"/>
+                  <Button Content="باز کردن" Style="{StaticResource GhostButton}" Tag="شناسنامه" Click="OnOpenDoc"/>
+                  <Button Content="حذف" Style="{StaticResource DangerButton}" Tag="شناسنامه" Click="OnDeleteDoc"/>
+                </WrapPanel>
+                <ListBox x:Name="BirthDocsBox" DisplayMemberPath="DisplayName" MinHeight="72"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         PreviewMouseWheel="OnDocsListWheel"
+                         MouseDoubleClick="OnOpenDocList"/>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" HorizontalAlignment="Stretch" Margin="0,0,0,12">
+              <StackPanel>
+                <TextBlock Text="کارت ملی" FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,6"/>
+                <TextBlock Style="{StaticResource MutedText}" Margin="0,0,0,8" TextWrapping="Wrap"
+                           Text="عنوان ذخیره: کارت ملی + نام کامل + کد ملی"/>
+                <WrapPanel Margin="0,0,0,8">
+                  <Button Content="افزودن" Style="{StaticResource PrimaryButton}" Tag="کارت ملی" Click="OnAddDoc"/>
+                  <Button Content="باز کردن" Style="{StaticResource GhostButton}" Tag="کارت ملی" Click="OnOpenDoc"/>
+                  <Button Content="حذف" Style="{StaticResource DangerButton}" Tag="کارت ملی" Click="OnDeleteDoc"/>
+                </WrapPanel>
+                <ListBox x:Name="NationalDocsBox" DisplayMemberPath="DisplayName" MinHeight="72"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         PreviewMouseWheel="OnDocsListWheel"
+                         MouseDoubleClick="OnOpenDocList"/>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" HorizontalAlignment="Stretch" Margin="0,0,0,8">
+              <StackPanel>
+                <TextBlock Text="سایر اسناد" FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,6"/>
+                <TextBlock Style="{StaticResource FieldLabel}" Text="عنوان ذخیره (دستی)"
+                           Margin="0,0,0,4"/>
+                <TextBox x:Name="DocSaveNameBox" Margin="0,0,0,8"
+                         TextChanged="OnDocSaveNameEdited"/>
+                <WrapPanel Margin="0,0,0,8">
+                  <Button Content="افزودن" Style="{StaticResource PrimaryButton}" Tag="سایر" Click="OnAddDoc"/>
+                  <Button Content="باز کردن" Style="{StaticResource GhostButton}" Tag="سایر" Click="OnOpenDoc"/>
+                  <Button Content="حذف" Style="{StaticResource DangerButton}" Tag="سایر" Click="OnDeleteDoc"/>
+                </WrapPanel>
+                <ListBox x:Name="OtherDocsBox" DisplayMemberPath="DisplayName" MinHeight="88"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         PreviewMouseWheel="OnDocsListWheel"
+                         MouseDoubleClick="OnOpenDocList"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>
